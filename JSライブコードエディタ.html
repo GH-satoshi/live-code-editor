@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Code Editor</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff77;
+        }
+        .codeArea {
+            background-color: #333333;
+            padding: 1rem;
+            color: #fff;
+            width: 50%;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            background-color: #022000;
+            color: #0f0;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            resize: vertical;
+        }
+        #result {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #c2c0c0;
+        }
+    </style>
+</head>
+
+
+<body>
+    <table class="container">
+        <tr>
+            <td class="codeArea">
+                <div class="html-code">
+                HTML <textarea spellcheck="false"></textarea>
+                </div>            
+            </td>
+            <td rowspan="3">
+                <iframe id="result"></iframe>    <!--iframeを使ってLive Code Editorを実現-->
+            </td>
+        </tr>
+        <tr>
+            <td class="codeArea">
+                <div class="css-code">
+                CSS <textarea spellcheck="false"></textarea>
+                </div>
+                </td>
+        </tr>
+        <tr>
+            <td class="codeArea">
+                <div class="js-code">
+                JavaScript <textarea spellcheck="false"></textarea>
+                </div>            
+            </td>
+        </tr>
+    </table>
+    
+    <script>
+        const html_code = document.querySelector('.html-code textarea');
+        const css_code = document.querySelector('.css-code textarea');
+        const js_code = document.querySelector('.js-code textarea');
+        const result = document.querySelector('#result');
+
+        function run() {
+            // Local Storageにデータを保存する //
+            localStorage.setItem('html_code', html_code.value);
+            localStorage.setItem('css_code', css_code.value);
+            localStorage.setItem('js_code', js_code.value);
+            // HTML,CSS,JSのコードを評価する //
+            result.contentDocument.body.innerHTML = `<style>${localStorage.css_code}</style>` + localStorage.html_code;
+            result.contentWindow.eval(localStorage.js_code);
+        }
+
+        // texrareaにキー入力があったかをチェック //
+        html_code.onkeyup = () => run();
+        css_code.onkeyup = () => run();
+        js_code.onkeyup = () => run();
+
+        // Local Storageに保存されているデータにアクセス //
+        html_code.value = localStorage.html_code;
+        css_code.value = localStorage.css_code;
+        js_code.value = localStorage.js_code;
+    </script>
+
+</body>
+
+</html>
