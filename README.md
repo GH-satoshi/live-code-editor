@@ -1,2 +1,2 @@
-# Live Coding Editor
+# Live Code Editor
 - HTML, CSS, JavaScript でライブコーディング
